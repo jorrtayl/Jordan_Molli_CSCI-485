@@ -4,57 +4,81 @@
 #include <stdbool.h>
 #include <dirent.h> 
 
-char RESPONSE[40];
+int SIZE = 40;
 
 void PromptCharacter(); // user prompt character that should always be represented.
-void Commands(); // all commands the user may enter.
+void Commands(char *response); // all commands the user may enter.
 void INThandler(int); // exits.
+void ToString(char *response); // converts the user's input into a string.
+int responseLength(char *response); // gets the length of the response.
 
 int main(void)
 {
-    PromptCharacter();
-    signal(SIGINT, INThandler);
-    while (1)
-        pause();
-    INThandler(1);
-    return 0;
+  PromptCharacter();
+  return 0;
+}
+
+int responseLength(char *response) {
+  int length = 0;
+  
+  for (int i = 0; i < response[i]; i++) {
+    length = i;
+  }
+
+  return length;
 }
 
 // Driver
 void PromptCharacter() {
-    // This loop should always be running, waiting for user input. (We may push this into a function later).
-    while (true) {
-        printf(">: ");
-        
-        Commands();
-        
-        char c;
-        int count;
-        
-        c = getchar();
-        count = 0;
-        while(c != EOF){
-            RESPONSE[count] = c;
-            ++count;
-        }
-    }
+  // This loop should always be running, waiting for user input. (We may push this into a function later).
+  char response[SIZE];
+
+  
+    getchar(); // eats newline character, this prevents two ">: " from appearing every time.
+
+    ToString(response);
+  }
+  
+  signal(SIGINT, INThandler);
+  while (1)
+    pause();
+
+  INThandler(1);
+}
+
+void ToString(char *response) {
+  char c = getchar();
+  int count = 0;
+
+  while (c != EOF) {
+    response[count] = c;
+    ++count;
+  }
 }
 
 // Needs fixing
-void Commands() {
-    // ls command: shows all files in the directory.
-    if (RESPONSE = "ls") {
-        DIR *d;
-        struct dirent *dir;
-       d = opendir(".");
-            
-        if (d) {
-            while ((dir = readdir(d)) != NULL) {
-                printf("%s\n", dir->d_name);
-            }
-        closedir(d);
-        }
+void Commands(char *response) {
+  // ls command: shows all files in the directory.
+  int length = 0;
+  
+  for (int i = 0; i < response[i]; i++) {
+    length = i;
+  }
+  
+  for (int i = 0; i < length; i++) {
+    if (response[i] = "ls") {
+      DIR *d;
+      struct dirent *dir;
+      d = opendir(".");
+
+      if (d) {
+	while ((dir = readdir(d)) != NULL) {
+	  printf("%s\n", dir -> d_name);
+	}
+	closedir(d);
+      }
     }
+  }
 }
 
 void  INThandler(int sig) {
@@ -64,7 +88,7 @@ void  INThandler(int sig) {
     printf("Do you really want to quit? [y/n] ");
     response = getchar();
         
-    if (response == 'Y' || RESPONSE == 'y')
+    if (response == 'Y' || response == 'y')
         exit(0);
     else
         signal(SIGINT, INThandler);
