@@ -40,7 +40,7 @@ void PromptCharacter() {
     while (true) {
       printf(">: ");
 
-      printf(response[0]);
+      printf(response);
 
       ToString(response); // Gets user input and converts it to a string.
 
