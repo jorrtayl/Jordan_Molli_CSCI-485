@@ -1,118 +1,130 @@
 #include <stdio.h>
-#include <signal.h>
 #include <stdlib.h>
-#include <stdbool.h>
-#include <dirent.h>
 #include <string.h>
+#include <ctype.h>
+#include <math.h>
+#include <time.h>
 
+void read();
+void write();
+void help();
+void quit();
 
-int SIZE = 40;
+int main(){
 
-void PromptCharacter(); // user prompt character that should always be represented.
-void Commands(char *response); // all commands the user may enter.
-void INThandler(int); // exits.
-void ToString(char *response); // converts the user's input into a string.
-int responseLength(char *response); // gets the length of the response.
+    char a[100];
 
-int main(void)
-{
-  PromptCharacter();
-  return 0;
-}
+    printf("Type \"help\" for the commands!\n\n");
 
-int responseLength(char *response) {
-  char *temp; // This is so we do not change the original.
-  int length = 0;
-  
-  for (temp = response; response != '\0'; temp++) {
-    length++;
-  }
+    while (1) {
 
-  return length;
-}
-
-// Driver
-void PromptCharacter() {
-  // This loop should always be running, waiting for user input. (We may push this into a function later).
-  char response[SIZE];
-  int length = 0;
-  
-  while(1) {
     printf(">: ");
+    fflush(stdin);
+    scanf("%s", a);
 
-    int c;
-    int count = 0;
+    if (strcmp(a, "read") == 0) {
 
-    c = getchar();
-    
-    length = responseLength(response); // Important for converting the character array to a string, it needs to know the exact size to iterate through.
-    printf(responseLength);
-    
-    while (c != EOF) {
-      response[count] = c;
-      ++count;
-      c = getchar();
+        read();
     }
-    
-    getchar(); // eats newline character, this prevents two ">: " from appearing every time.
+    else if (strcmp(a, "write") == 0) {
 
-    // ToString(response);
-  }
-  
-  signal(SIGINT, INThandler);
-  while (1)
-    pause();
-
-  INThandler(1);
-}
-
-/*void ToString(char *response) {
-  char c = getchar(); // If this is removed, an infinite loop will occur.
-  int count = 0;
-
-  while (c != EOF) {
-    response[count] = c;
-    ++count;
-  }
-  }*/
-
-// Needs fixing
-void Commands(char *response) {
-  // ls command: shows all files in the directory.
-  int length = 0;
-  
-  for (int i = 0; i < response[i]; i++) {
-    length = i;
-  }
-  
-  for (int i = 0; i < length; i++) {
-    if (response[i] = "ls") {
-      DIR *d;
-      struct dirent *dir;
-      d = opendir(".");
-
-      if (d) {
-	while ((dir = readdir(d)) != NULL) {
-	  printf("%s\n", dir -> d_name);
-	}
-	closedir(d);
-      }
+        write();
     }
-  }
-}
+    else if (strcmp(a, "help") == 0) {
 
-void  INThandler(int sig) {
-    char response;
-    
-    signal(sig, SIG_IGN);
-    printf("Do you really want to quit? [y/n] ");
-    response = getchar();
-        
-    if (response == 'Y' || response == 'y')
-        exit(0);
+        help();
+    }
+    else if (strcmp(a, "quit") == 0) {
+
+        quit();
+
+    }
     else
-        signal(SIGINT, INThandler);
+        printf("Enter only stated things in help\n");
         
-        
-    getchar(); // Get new line character
+    }
+
+    return 0;
+
+}
+
+void read() {
+
+    char a[100];
+
+    printf("For reading, provide a file extension.\nEx: hello.txt\n\n");
+
+    FILE *p;
+
+    printf("Enter file name: ");
+    scanf("%s", a);
+
+    char c;
+
+    p = fopen(a, "r");
+
+    if (p == NULL) {
+        printf("\nError\n");
+    }
+
+    printf("\n");
+
+    c = fgetc(p);
+
+    while (c != EOF){
+        printf("%c", c);
+        c = fgetc(p);
+    }
+
+    fclose(p);
+
+    printf("\n\n Successfully Read\n");
+
+}
+
+void write(){
+
+    char a[100];
+
+    printf("For reading, provide a file extension.\nEx: hello.txt\n\n");
+
+    FILE *p;
+
+    printf("Enter File Name To Write: ");
+    scanf("%s", a);
+
+    p = fopen(a, "w");
+
+    fflush(stdin);
+
+    printf("Enter ~ to exit from writing\n");
+    printf("Start writing: \n");
+
+    int ch=NULL;
+
+    while(ch != '~'){
+        ch = getchar();
+
+        if(ch != '~'){
+
+        fputc(ch, p);
+        }
+    }
+    
+    fclose(p);
+
+    printf("\n\nSuccessfully Written\n");
+}
+
+void help(){
+    printf("\n");
+    printf("Here are all of the possible commands\n\n");
+    printf("write  : To write to a file\n");
+    printf("read   : To read from a file\n");
+    printf("quit   : To quit\n");
+    printf("\n");
+}
+
+void quit(){
+    exit(1);
 }
