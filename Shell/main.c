@@ -7,11 +7,12 @@
 #include <dirent.h>
 
 // Commands
-void read();
+void cat();
 void write();
 void ls(char[]);
 void help();
 void quit();
+void cp();
 
 int main(int argc, char **argv){
 
@@ -25,8 +26,8 @@ int main(int argc, char **argv){
     fflush(stdin);
     scanf("%s", a);
 
-    if (strcmp(a, "read") == 0) {
-      read();
+    if (strcmp(a, "cat") == 0) {
+      cat();
     }
     else if (strcmp(a, "write") == 0) {
       write();
@@ -48,6 +49,9 @@ int main(int argc, char **argv){
     else if (strcmp(a, "quit") == 0) {
       quit();
     }
+    else if (strcmp(a, "cp") == 0) {
+      cp();
+    }
     else
       printf("Enter only stated things in help\n");  
     }
@@ -55,15 +59,12 @@ int main(int argc, char **argv){
     return 0;
 }
 
-void read() {
+void cat() {
 
   char a[100];
 
-  printf("For reading, provide a file extension.\nEx: hello.txt\n\n");
-
   FILE *p;
-
-  printf("Enter file name: ");
+  
   scanf("%s", a);
 
   char c;
@@ -148,8 +149,8 @@ void help(){
   printf("\n");
   printf("Here are all of the possible commands\n\n");
   printf("write  : To write to a file\n");
-  printf("read   : To read from a file\n");
-  printf("ls     : Displays all directories in the user's current directory.");
+  printf("cat    : To read from a file\n");
+  printf("ls     : Displays all directories in the user's current directory.\n");
   printf("quit   : To quit\n");
   printf("\n");
 }
