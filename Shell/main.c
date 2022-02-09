@@ -8,7 +8,7 @@
 
 // Commands
 void cat();
-void write();
+void emacs();
 void ls(char[]);
 void help();
 void quit();
@@ -29,8 +29,8 @@ int main(int argc, char **argv){
     if (strcmp(a, "cat") == 0) {
       cat();
     }
-    else if (strcmp(a, "write") == 0) {
-      write();
+    else if (strcmp(a, "emacs") == 0) {
+      emacs();
     }
     else if (strcmp(a, "ls") == 0) {
       if (argc == 1) {
@@ -90,7 +90,7 @@ void cat() {
 
 }
 
-void write(){
+void emacs(){
 
   char a[100];
 
@@ -102,17 +102,16 @@ void write(){
 
   fflush(stdin);
 
-  printf("Enter ~ to exit from writing\n");
-  printf("Start writing: \n");
+  printf("Enter ~ to exit\n");
+  
+  int c = NULL;
 
-  int ch = NULL;
+  while (c != '~') {
+    c = getchar();
 
-  while (ch != '~') {
-    ch = getchar();
+    if (c != '~') {
 
-    if (ch != '~') {
-
-      fputc(ch, p);
+      fputc(c, p);
     }
   }
 
@@ -145,9 +144,11 @@ void ls(char dirname[]) {
 void help(){
   printf("\n");
   printf("Here are all of the possible commands\n\n");
-  printf("write  : To write to a file\n");
-  printf("cat    : To read from a file\n");
+  printf("help   : Displays this menu of commands.\n");
   printf("ls     : Displays all directories in the user's current directory.\n");
+  printf("cat    : To read from a file\n");
+  printf("cp     : Copies one file to another. Example use: original.txt new.txt\n");
+  printf("emacs  : Allows the user to create and modify a file.\n");
   printf("quit   : To quit\n");
   printf("\n");
 }
