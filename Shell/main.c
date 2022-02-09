@@ -94,11 +94,8 @@ void write(){
 
   char a[100];
 
-  printf("For reading, provide a file extension.\nEx: hello.txt\n\n");
-
   FILE *p;
-
-  printf("Enter File Name To Write: ");
+  
   scanf("%s", a);
 
   p = fopen(a, "w");
@@ -157,4 +154,41 @@ void help(){
 
 void quit(){
   exit(1);
+}
+
+void cp() {
+  char a[100];
+  char b[100];
+  
+  FILE *original, *new;
+
+  scanf("%s", a);
+  scanf("%s", b);
+
+  char c;
+  
+  original = fopen(a, "r");
+  
+  if (original == NULL) {
+    printf("\nError\n");
+    printf("Press any key to exit.\n");
+    exit(1);
+  }
+
+  new = fopen(b, "w");
+
+  if (new == NULL) {
+    printf("\nError\n");
+    printf("Press any key to exit.\n");
+  }
+  
+  printf("\n");
+
+  while ((c = fgetc(original)) != EOF) {
+    fputc(c, new);
+  }
+  printf("Successfully Copied\n");
+  
+  fclose(original);
+  fclose(new);
 }
