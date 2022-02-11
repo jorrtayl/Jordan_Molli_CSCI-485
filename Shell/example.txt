@@ -1,2 +1,0 @@
-
-Hello, I am currently typing this in through the shell program. I am testing the emacs command.

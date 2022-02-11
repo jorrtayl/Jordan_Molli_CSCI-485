@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include <math.h>
-#include <time.h>
 #include <dirent.h>
 
 // Commands
@@ -13,19 +11,33 @@ void ls(char[]);
 void help();
 void quit();
 void cp();
+char **store_commands(char **, char *);
+void history(char **);
 
 int main(int argc, char **argv){
 
-  char a[100];
+  char *a =  (char *)malloc(50 * sizeof(char));
+  char **record = (char **)malloc(50 * sizeof(char *));
 
+  
+  
   printf("Type \"help\" for the commands!\n\n");
 
   while (1) {
-
     printf(">: ");
     fflush(stdin);
     scanf("%s", a);
 
+    //printf("%s\n", "Value of commands: ", commands);
+
+    record = store_commands(record, a);
+
+    printf("s\n", record);
+    
+    for (int i = 0; i < strlen(record); i++) {
+      printf("%s\n", record[i]);
+    }
+    
     if (strcmp(a, "cat") == 0) {
       cat();
     }
@@ -51,6 +63,10 @@ int main(int argc, char **argv){
     }
     else if (strcmp(a, "cp") == 0) {
       cp();
+    }
+    else if (strcmp(a, "history") == 0) {
+      //printf("%s\n", "Test");
+      //history(commands);
     }
     else
       printf("Enter only stated things in help\n");  
@@ -90,7 +106,7 @@ void cat() {
 
 }
 
-void emacs(){
+void emacs() {
 
   char a[100];
 
@@ -144,12 +160,13 @@ void ls(char dirname[]) {
 void help(){
   printf("\n");
   printf("Here are all of the possible commands\n\n");
-  printf("write  : To write to a file\n");
-  printf("cat    : To read from a file\n");
-  printf("ls     : Displays all directories in the user's current directory.\n");
-  printf("cp     : Copies one file to another. Example use: original.txt new.txt\n");
-  printf("emacs  : Allows the user to create and modify a file.\n");
-  printf("quit   : To quit\n");
+  printf("help     : Displays this menu of commands.\n");
+  printf("ls       : Displays all directories in the user's current directory.\n");
+  printf("cat      : To read from a file\n");
+  printf("cp       : Copies one file to another. Example use: original.txt new.txt\n");
+  printf("emacs    : Allows the user to create and modify a file.\n");
+  printf("history  : Displays all previous commands up to 50.\n");
+  printf("quit     : To quit\n");
   printf("\n");
 }
 
@@ -157,12 +174,12 @@ void quit(){
   exit(1);
 }
 
-void cp() {
+ void cp() {
   char a[100];
   char b[100];
   
   FILE *original, *new;
-
+  
   scanf("%s", a);
   scanf("%s", b);
 
@@ -192,4 +209,28 @@ void cp() {
   
   fclose(original);
   fclose(new);
+}
+
+char **store_commands(char **userHistory, char *userCommands) {
+  for (int i = 0; i < 50; i++) {
+    if (userHistory[i] == ' ') {
+      userHistory[i] = userCommands;
+      
+      return userHistory;
+    }
+  }
+
+  for (int i = 0; i < 50 - 1; i++) {
+    userHistory[i + 1] = userHistory[i];
+    userHistory[50] = userCommands;
+
+    return userHistory;
+  }
+}
+
+void history(char **commands) {
+  for (int i = 0; i < sizeof(commands); i++) {
+    //printf("%s\n", commands[i]);
+    //fflush(stdout);
+  }
 }

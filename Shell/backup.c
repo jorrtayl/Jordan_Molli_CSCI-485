@@ -11,43 +11,27 @@ void ls(char[]);
 void help();
 void quit();
 void cp();
-char **store_commands(char **, char *);
+char **store_commands(char[], int);
 void history(char **);
 
 int main(int argc, char **argv){
 
-  char *a =  (char *)malloc(50 * sizeof(char));
-  char **record = (char **)malloc(50 * sizeof(char *));
+  char a[100];
+  char **commands;
+  int inputIncrement = 0;
   
   printf("Type \"help\" for the commands!\n\n");
-/*
-  while (TRUE) {
-    type prompt( );
-    read command(command, parameters);
-    if (for k( ) != 0) {
-      
-      waitpid(−1, &status, 0);
-    } else {
-      
-      execve(command, parameters, 0);
-    }
-  }
-*/
-  
+
   while (1) {
     printf(">: ");
     fflush(stdin);
     scanf("%s", a);
+    
+    commands = store_commands(a, inputIncrement);
 
     //printf("%s\n", "Value of commands: ", commands);
-
-    record = store_commands(record, a);
-
-    printf("s\n", record);
     
-    for (int i = 0; i < strlen(record); i++) {
-      printf("%s\n", record[i]);
-    }
+    inputIncrement++;
     
     if (strcmp(a, "cat") == 0) {
       cat();
@@ -222,26 +206,28 @@ void quit(){
   fclose(new);
 }
 
-char **store_commands(char **userHistory, char *userCommands) {
-  for (int i = 0; i < 50; i++) {
-    if (userHistory[i] == ' ') {
-      userHistory[i] = userCommands;
-      
-      return userHistory;
-    }
-  }
+ char **store_commands(char input[], int count) {
+   char temp[50];
+   
+   strcpy(temp, input); // Test, works.
+   
+   char **stored = (char **)malloc(count * sizeof(char *));
+   for (int i = 0; i < count; i++) {
+     stored[i] = (char *)malloc(strlen(temp) * sizeof(char));
+   }
 
-  for (int i = 0; i < 50 - 1; i++) {
-    userHistory[i + 1] = userHistory[i];
-    userHistory[50] = userCommands;
-
-    return userHistory;
-  }
+   for (int i = 0; i < count; i++) {
+     for (int j = 0; j < sizeof(temp); j++) {
+       stored[i][j] = temp;
+     }
+   }
+   
+   return stored;
 }
 
 void history(char **commands) {
   for (int i = 0; i < sizeof(commands); i++) {
-    //printf("%s\n", commands[i]);
-    //fflush(stdout);
+    printf("%s\n", commands[i]);
+    fflush(stdout);
   }
 }
