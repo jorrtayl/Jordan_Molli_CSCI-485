@@ -1,0 +1,6 @@
+config HelloGoodbye
+	tristate "Linux Kernel Module Hello"
+	default m
+	depends on MODULES
+	help
+		Linux Kernel Module Hello
